@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Block commits that touch noai/ when Claude is credited on the commit.
+#
+# The noai/ tree is off-limits to AI assistance. Claude Code adds a
+# "Co-Authored-By: Claude ..." trailer to commits it makes, so a commit that
+# both carries that attribution and modifies noai/ is rejected here.
+
+set -euo pipefail
+
+msg_file="$1"
+
+# --- does this commit change anything under noai/ ? -------------------------
+if git rev-parse --verify -q HEAD >/dev/null; then
+    against=HEAD
+else
+    against=$(git hash-object -t tree /dev/null)
+fi
+
+# --no-renames so a file moved *out of* noai/ still reports its old path.
+if ! git diff --cached --no-renames --name-only "$against" -- 'noai' 'noai/**' | grep -q .; then
+    exit 0
+fi
+
+# --- is Claude credited on this commit? -------------------------------------
+claude_re='(Co-Authored-By:[[:space:]]*Claude|noreply@anthropic\.com|Generated with \[?Claude Code|Claude-Session:)'
+
+credited=""
+if grep -qEi "$claude_re" "$msg_file"; then
+    credited="commit message"
+fi
+
+for ident in \
+    "$(git var GIT_AUTHOR_IDENT)" \
+    "$(git var GIT_COMMITTER_IDENT)"
+do
+    if printf '%s' "$ident" | grep -qEi '(anthropic\.com|^claude[[:space:]<]|[[:space:]]claude[[:space:]<])'; then
+        credited="author/committer identity"
+    fi
+done
+
+[ -n "$credited" ] || exit 0
+
+if [ "${NOAI_OVERRIDE:-}" = "1" ]; then
+    echo "noai: override set, allowing Claude-attributed commit to noai/" >&2
+    exit 0
+fi
+
+{
+    echo
+    echo "BLOCKED: Claude-attributed commit modifies noai/"
+    echo
+    echo "  attribution found in: $credited"
+    echo "  offending paths:"
+    git diff --cached --no-renames --name-only "$against" -- 'noai' 'noai/**' | sed 's/^/    /'
+    echo
+    echo "  noai/ is a no-AI zone. Either unstage those paths, or commit them"
+    echo "  without the Claude attribution (NOAI_OVERRIDE=1 to force)."
+    echo
+} >&2
+
+exit 1
