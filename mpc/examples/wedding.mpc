@@ -1,0 +1,63 @@
+# Wedding cards.
+#
+# Everything before the first "---" is a deck-level default: every card in the
+# file inherits it, and can override it.
+
+@art-dir   art
+@out-dir   out
+@set       WED
+@language  EN
+@year      2026
+@artist    Robert Aldrich
+@copyright Robert & Bibbo • 2026
+
+---
+# A reusable template. Cards opt in with "@template legend".
+@deftemplate legend
+@frame  regular
+@rarity mythic
+@copies 2
+
+---
+# ...and one for the non-legendary filler cards.
+@deftemplate common
+@frame  regular
+@rarity common
+
+---
+@template legend
+@art    IMG_2456.JPEG
+@number 001
+
+Sir Whiskers, Snack Thief {2}{G}{W}
+Legendary Creature — Cat Noble
+
+Vigilance
+When ~ enters the battlefield, create a Food token.
+{T}, Sacrifice a Food: Draw a card.
+> That was never yours to begin with.
+3/4
+
+---
+@template common
+@art     IMG_2456.JPEG
+@art-fit contain
+@number  002
+
+Afternoon Sunbeam {1}{W}
+Enchantment — Aura
+
+Enchant creature
+Enchanted creature gets +1/+1 and doesn't untap during its controller's
+untap step.
+> Some naps are a *commitment*.
+
+---
+# No art, no template: bare minimum a card can be.
+@number 003
+@rarity uncommon
+
+Open Bar {2}{U}
+Instant
+
+Draw two cards. You may play an additional land this turn.
