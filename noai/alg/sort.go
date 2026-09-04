@@ -1,5 +1,7 @@
 package alg
 
+import "math/rand"
+
 type PivotChoice int
 
 const (
@@ -13,8 +15,8 @@ type QuickSortOpts struct {
 	PivotChoice PivotChoice
 }
 
-func QuickSort[T comparable](l []T, opts ...QuickSortOpts) {
-	if len(l) < 2 {
+func QuickSort[T comparable](elements []T, opts ...QuickSortOpts) {
+	if len(elements) < 2 {
 		return
 	}
 
@@ -25,19 +27,17 @@ func QuickSort[T comparable](l []T, opts ...QuickSortOpts) {
 
 	var pivotIdx int
 	switch o.PivotChoice {
-	case PivotChoiceFirstElement:
-		pivotIdx = 0
 	case PivotChoiceNone:
 		pivotIdx = 0
+	case PivotChoiceFirstElement:
+		pivotIdx = 0
+	case PivotChoiceRandomElement:
+		pivotIdx = rand.Intn(len(elements) - 1)
+	case PivotChoiceMedianElement:
+		pivotIdx, _ = FindMedian(elements)
+	default:
+		panic("pivot choice not yet implemented")
 	}
 
 	_ = pivotIdx
-}
-
-func getFirstOrDefault[T any](l []T) T {
-	if len(l) == 0 {
-		return *new(T)
-	}
-
-	return l[0]
 }
