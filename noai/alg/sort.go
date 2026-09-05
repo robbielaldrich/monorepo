@@ -1,6 +1,9 @@
 package alg
 
-import "math/rand"
+import (
+	"cmp"
+	"math/rand"
+)
 
 type PivotChoice int
 
@@ -15,7 +18,7 @@ type QuickSortOpts struct {
 	PivotChoice PivotChoice
 }
 
-func QuickSort[T comparable](elements []T, opts ...QuickSortOpts) {
+func QuickSort[T cmp.Ordered](elements []T, opts ...QuickSortOpts) {
 	if len(elements) < 2 {
 		return
 	}
@@ -34,7 +37,16 @@ func QuickSort[T comparable](elements []T, opts ...QuickSortOpts) {
 	case PivotChoiceRandomElement:
 		pivotIdx = rand.Intn(len(elements) - 1)
 	case PivotChoiceMedianElement:
-		pivotIdx, _ = FindMedian(elements)
+		median := FindMedian(elements)
+		found := false
+		for i, val := range elements {
+			if val == median {
+				found = true
+				pivotIdx = i
+				break
+			}
+		}
+		assert(found, "median not found in elements")
 	default:
 		panic("pivot choice not yet implemented")
 	}

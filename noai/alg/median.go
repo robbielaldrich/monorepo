@@ -71,7 +71,7 @@ func quickSelectKthSmallestElement[T cmp.Ordered](elements []T, k int) T {
 }
 
 func assert(b bool, msg string) {
-	if b {
+	if !b {
 		panic(msg)
 	}
 }
