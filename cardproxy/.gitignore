@@ -1,0 +1,7 @@
+.venv/
+tools/
+# card scans, personal photos and renders stay local
+*.png
+*.jpg
+*.jpeg
+*.webp
