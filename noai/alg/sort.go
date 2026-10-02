@@ -23,7 +23,7 @@ func QuickSort[T cmp.Ordered](elements []T, opts ...QuickSortOpts) {
 		return
 	}
 
-	o := getFirstOrDefault(opts)
+	o := firstOrNew(opts)
 	if o.PivotChoice == PivotChoiceNone {
 		o.PivotChoice = PivotChoiceFirstElement
 	}

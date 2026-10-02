@@ -11,8 +11,8 @@ type FindMedianAlgorithm int
 const (
 	FindMedianAlgorithmNone FindMedianAlgorithm = iota
 	FindMedianAlgorithmSortElements
-	FindMedianAlgorithmQuickSelect
-	FindMedianAlgorithmPick // https://people.csail.mit.edu/rivest/pubs/BFPRT73.pdf
+	FindMedianAlgorithmQuickSelect // https://rcoh.me/posts/linear-time-median-finding
+	FindMedianAlgorithmPick        // https://people.csail.mit.edu/rivest/pubs/BFPRT73.pdf
 )
 
 type FindMedianOpts struct {
@@ -24,7 +24,7 @@ func FindMedian[T cmp.Ordered](elements []T, opts ...FindMedianOpts) T {
 		panic("no elements")
 	}
 
-	o := getFirstOrDefault(opts)
+	o := firstOrNew(opts)
 	if o.Algorithm == FindMedianAlgorithmNone {
 		o.Algorithm = FindMedianAlgorithmQuickSelect
 	}
@@ -35,12 +35,13 @@ func FindMedian[T cmp.Ordered](elements []T, opts ...FindMedianOpts) T {
 		return elements[len(elements)/2]
 	case FindMedianAlgorithmQuickSelect:
 		return quickSelectKthSmallestElement(elements, len(elements)/2)
+	case FindMedianAlgorithmPick:
+		return pickKthSmallestElement(elements, len(elements)/2)
 	default:
 		panic("not yet implemented")
 	}
 }
 
-// quickSelectKthSmallestElement references https://rcoh.me/posts/linear-time-median-finding.
 func quickSelectKthSmallestElement[T cmp.Ordered](elements []T, k int) T {
 	if len(elements) == 1 {
 		assert(k == 0, "unexpected k in base case")
@@ -76,6 +77,9 @@ func quickSelectKthSmallestElement[T cmp.Ordered](elements []T, k int) T {
 		// Pass smaller k since we're jumping past elementsLessThanPivot and elementsEqualToPivot.
 		return quickSelectKthSmallestElement(elementsGreaterThanPivot, k-(nLess+nEq))
 	}
+}
+
+func pickKthSmallestElement[T cmp.Ordered](elements []T, k int) T {
 }
 
 func assert(b bool, msg string) {
