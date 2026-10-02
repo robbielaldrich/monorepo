@@ -3,6 +3,7 @@ package alg
 import (
 	"cmp"
 	"math/rand"
+	"slices"
 )
 
 type FindMedianAlgorithm int
@@ -19,17 +20,24 @@ type FindMedianOpts struct {
 }
 
 func FindMedian[T cmp.Ordered](elements []T, opts ...FindMedianOpts) T {
+	if len(elements) == 0 {
+		panic("no elements")
+	}
+
 	o := getFirstOrDefault(opts)
 	if o.Algorithm == FindMedianAlgorithmNone {
 		o.Algorithm = FindMedianAlgorithmQuickSelect
 	}
 
 	switch o.Algorithm {
+	case FindMedianAlgorithmSortElements:
+		slices.Sort(elements)
+		return elements[len(elements)/2]
 	case FindMedianAlgorithmQuickSelect:
 		return quickSelectKthSmallestElement(elements, len(elements)/2)
+	default:
+		panic("not yet implemented")
 	}
-
-	panic("not yet implemented")
 }
 
 // quickSelectKthSmallestElement references https://rcoh.me/posts/linear-time-median-finding.
