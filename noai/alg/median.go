@@ -80,6 +80,33 @@ func quickSelectKthSmallestElement[T cmp.Ordered](elements []T, k int) T {
 }
 
 func pickKthSmallestElement[T cmp.Ordered](elements []T, k int) T {
+	const (
+		c = 5 // Smallest odd value that works (keeps O(N) run time).
+		d = 3 // Position of median in sorted list of size c (value 5).
+	)
+
+	// Split elements into columns of size c.
+	nOverC := len(elements) / c
+	columns := make([][]T, 0, nOverC)
+
+	columnIdx := -1
+	for elementIdx, element := range elements {
+		if elementIdx%c == 0 {
+			columnIdx += 1
+			columns = append(columns, make([]T, 0, c))
+		}
+
+		columns[columnIdx] = append(columns[columnIdx], element)
+	}
+
+	for _, column := range columns {
+		// Sort the column (sorting a list of constant size takes constant time).
+		slices.Sort(column)
+
+		// Pick the middle element of the column.
+		if len(elements) > 1
+		pickKthSmallestElement(
+	}
 }
 
 func assert(b bool, msg string) {

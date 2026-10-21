@@ -44,6 +44,10 @@ Outputs have their DPI set to `width / 2.5in`, so the printer's quality check re
 - **Magic 8th/Mirrodin frame (745×1040 Scryfall PNG):** the art window inside its 1px
   black border is x 60–682, y 120–576 (623×457, aspect ≈1.363). Found by scanning
   pixel brightness for the black border line.
+- **Magic 8th-frame 672×936 JPG scan (Beast Within):** art window is
+  `--window 57,111,615,519` (558×408). No alpha, so the corners stay as scanned.
+- **Magic modern (M15+) frame, 488×680 JPG scan (Explore, TLE):** art window is
+  `--window 38,77,449,377` (411×300). Small scan, so the 4× output is only 1952×2720 (~781 DPI).
 - **Pokémon full-art (TAG TEAM, 717×1000):** the art is behind everything, so the approach is
   "photo under the art window + a keep-mask of the card's own parts on top". The mask is built from:
   - Frame outside the art window (x 28–687, y 28–977).
@@ -80,3 +84,5 @@ Outputs have their DPI set to `width / 2.5in`, so the printer's quality check re
 |---|---|---|
 | Mesmeric Orb (MTG) | `~/Desktop/mesmericorb/{mesmericorb.png,newart.jpeg}` | `mesmericorb_custom_hires.png` 2980×4160 |
 | Latias & Latios TAG TEAM | `~/Desktop/tagteam/{183899_in_1000x1000.jpg,IMG_0636.jpeg}` | `tagteam_custom_hires.png` 2868×4000 |
+| Beast Within (MTG) | `~/Desktop/beastwithin/{39491_in_1000x1000.jpg,IMG_0013.jpeg}`, `--top 0.27` | `beastwithin_custom_hires.png` 2688×3744 |
+| Explore (MTG, TLE) | `~/Desktop/explore/{ab9dbf0b-….jpg,IMG_4735.jpeg}`, `--top 0.24` | `explore_custom_hires.png` 1952×2720 |
