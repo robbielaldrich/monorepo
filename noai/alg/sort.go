@@ -28,28 +28,28 @@ func QuickSort[T cmp.Ordered](elements []T, opts ...QuickSortOpts) {
 		o.PivotChoice = PivotChoiceFirstElement
 	}
 
-	var pivotIdx int
+	var pivot T
 	switch o.PivotChoice {
 	case PivotChoiceNone:
-		pivotIdx = 0
+		pivot = elements[0]
 	case PivotChoiceFirstElement:
-		pivotIdx = 0
+		pivot = elements[0]
 	case PivotChoiceRandomElement:
-		pivotIdx = rand.Intn(len(elements) - 1)
+		pivot = elements[rand.Intn(len(elements)-1)]
 	case PivotChoiceMedianElement:
-		median := FindMedian(elements)
-		found := false
-		for i, val := range elements {
-			if val == median {
-				found = true
-				pivotIdx = i
-				break
-			}
-		}
-		assert(found, "median not found in elements")
+		pivot = FindMedian(elements)
 	default:
 		panic("pivot choice not yet implemented")
 	}
 
-	_ = pivotIdx
+	// todo
+	left := 0
+	for right := len(elements) - 1; right >= 0; right-- {
+		if elements[right] < pivot {
+			elements[right], elements[left] = elements[left], elements[right]
+			left++
+		}
+	}
+
+	elements[left], elements[len(elements)-1] = elements[left], elements[right]
 }
