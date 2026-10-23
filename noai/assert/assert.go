@@ -10,3 +10,15 @@ func Equal[V comparable](t *testing.T, got, expected V) {
 		t.Errorf("assertion error: got %v, expected %v", got, expected)
 	}
 }
+
+func True(b bool, falseDesc string) {
+	if !b {
+		panic(falseDesc)
+	}
+}
+
+func NoError(err error) {
+	if err != nil {
+		panic(err.Error())
+	}
+}

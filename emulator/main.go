@@ -2,8 +2,10 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/robbielaldrich/monorepo/noai/assert"
 )
 
 const (
@@ -21,6 +23,8 @@ type Game struct {
 // Update runs at 60 ticks per second, which matches the CHIP-8 timer rate.
 func (g *Game) Update() error {
 	// TODO: run CPU cycles, decrement timers, read keys.
+	// Fetch batch from program counter
+	//
 	return nil
 }
 
@@ -48,6 +52,11 @@ func main() {
 
 	ebiten.SetWindowSize(screenWidth*scale, screenHeight*scale)
 	ebiten.SetWindowTitle("CHIP-8")
+
+	assert.True(len(os.Args) == 2, "invalid number of args (expect 2)")
+	data, err := os.ReadFile(os.Args[1])
+	if 
+
 	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
 	}
