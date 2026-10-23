@@ -105,7 +105,7 @@ func pickKthSmallestElement[T cmp.Ordered](elements []T, k int) T {
 
 		// Pick the middle element of the column.
 		if len(elements) > 1
-		pickKthSmallestElement(
+
 	}
 }
 
